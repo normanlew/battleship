@@ -1,0 +1,27 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "The classic kid's game",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/normanlew/battleship.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/normanlew/battleship/issues"
+  },
+  "homepage": "https://github.com/normanlew/battleship#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.7",
+    "jest": "^30.4.2",
+    "webpack": "^5.109.0",
+    "webpack-cli": "^7.2.1"
+  }
+}
