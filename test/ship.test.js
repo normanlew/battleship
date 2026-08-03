@@ -19,7 +19,7 @@ describe('test ship with no hits', () => {
     test('ship is sunk is false', () => {
         expect(ship.isSunk()).toBeFalsy;
     })
-})
+});
 
 
 describe('test ship with hits', () => {
@@ -38,7 +38,7 @@ describe('test ship with hits', () => {
     test('ship is sunk is false', () => {
         expect(ship2.isSunk()).toBeFalsy;
     })
-})
+});
 
 describe('test ship that is sunk', () => {
     let ship3;
@@ -56,5 +56,5 @@ describe('test ship that is sunk', () => {
     test('ship is sunk is true', () => {
         expect(ship3.isSunk()).toBeTruthy;
     })
-})
+});
 
