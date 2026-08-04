@@ -9,7 +9,7 @@ beforeAll(() => {
     // ship = new Ship();
 });
 
-describe('ship placements on empty board', () => {
+describe('vertical ship placements on empty board', () => {
     let ship1;
     // let ship2;
 
@@ -28,7 +28,7 @@ describe('ship placements on empty board', () => {
     
 });
 
-describe('ship placements with ships on board', () => {
+describe('vertical ship placements with ships already on the board', () => {
     let ship1;
     let ship2;
 
@@ -49,6 +49,49 @@ describe('ship placements with ships on board', () => {
 
     test('ship placement is successful', () => {
         expect(gameBoard.placeShip(ship2, 6, 5, true)).toBeTrue;
+    })
+})
+
+describe('horizontal ship placements on empty board', () => {
+    let ship1;
+    // let ship2;
+
+    beforeAll(() => {
+        ship1 = new Ship(1);
+        // ship2 = new Ship(2);
+    });
+
+    test('ship placement is successful', () => {
+        expect(gameBoard.placeShip(ship1, 0, 0, false)).toBeTruthy;
+    });
+
+    test('ship placement is unsuccessful', () => {
+        expect(gameBoard.placeShip(ship1, 0, 20, false)).toBeFalsy;
+    });
+    
+});
+
+describe('horizontal ship placements with ships already on the board', () => {
+    let ship1;
+    let ship2;
+
+    beforeAll(() => {
+        ship1 = new Ship(4);
+        ship2 = new Ship(3);
+
+        gameBoard.placeShip(ship1, 0, 6, true);
+    });
+
+    test('ship placement is unsuccessful', () => {
+        expect(gameBoard.placeShip(ship2, 4, 5, false)).toBeFalsy;
+    });
+
+    test('ship placement is unsuccessful', () => {
+        expect(gameBoard.placeShip(ship2, 1, 7, true)).toBeFalsy;
+    })
+
+    test('ship placement is successful', () => {
+        expect(gameBoard.placeShip(ship2, 2, 4, true)).toBeTrue;
     })
 
     
