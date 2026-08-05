@@ -19,11 +19,11 @@ describe('vertical ship placements on empty board', () => {
     });
 
     test('ship placement is successful', () => {
-        expect(gameBoard.placeShip(ship1, 0, 0, true)).toBeTruthy;
+        expect(gameBoard.placeShip(ship1, 0, 0, true)).toBeTruthy();
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship1, -1, 0, true)).toBeFalsy;
+        expect(gameBoard.placeShip(ship1, -1, 0, true)).toBeFalsy();
     });
     
 });
@@ -40,17 +40,17 @@ describe('vertical ship placements with ships already on the board', () => {
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship2, 4, 8, true)).toBeFalsy;
+        expect(gameBoard.placeShip(ship2, 4, 8, true)).toBeFalsy();
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship2, 5, 8, true)).toBeFalsy;
+        expect(gameBoard.placeShip(ship2, 5, 8, true)).toBeFalsy();
     })
 
     test('ship placement is successful', () => {
-        expect(gameBoard.placeShip(ship2, 6, 5, true)).toBeTrue;
+        expect(gameBoard.placeShip(ship2, 6, 5, true)).toBeTruthy();
     })
-})
+});
 
 describe('horizontal ship placements on empty board', () => {
     let ship1;
@@ -62,11 +62,11 @@ describe('horizontal ship placements on empty board', () => {
     });
 
     test('ship placement is successful', () => {
-        expect(gameBoard.placeShip(ship1, 0, 0, false)).toBeTruthy;
+        expect(gameBoard.placeShip(ship1, 0, 0, false)).toBeTruthy();
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship1, 0, 20, false)).toBeFalsy;
+        expect(gameBoard.placeShip(ship1, 0, 20, false)).toBeFalsy();
     });
     
 });
@@ -83,17 +83,55 @@ describe('horizontal ship placements with ships already on the board', () => {
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship2, 4, 5, false)).toBeFalsy;
+        expect(gameBoard.placeShip(ship2, 4, 5, false)).toBeFalsy();
     });
 
     test('ship placement is unsuccessful', () => {
-        expect(gameBoard.placeShip(ship2, 1, 7, true)).toBeFalsy;
+        expect(gameBoard.placeShip(ship2, 1, 7, true)).toBeFalsy();
     })
 
     test('ship placement is successful', () => {
-        expect(gameBoard.placeShip(ship2, 2, 4, true)).toBeTrue;
+        expect(gameBoard.placeShip(ship2, 2, 4, true)).toBeTruthy();
     })
 
     
-})
+});
+
+describe('attack functionality on empty spaces on the board', () => {
+    let ship;
+
+    beforeAll(() => {
+        ship = new Ship(3);
+
+        gameBoard.placeShip(ship, 5, 7, true);
+    });
+
+    test('attack on empty space should be true', () => {
+        expect(gameBoard.receiveAttack(1, 4)).toBeTruthy();
+    });
+
+    test('attack on empty space should be true', () => {
+        expect(gameBoard.receiveAttack(5, 7)).toBeTruthy();
+    });
+});
+
+describe('attack functionality on non-empty spaces on the board', () => {
+    let ship;
+
+    beforeAll(() => {
+        ship = new Ship(3);
+        gameBoard.placeShip(ship, 5, 7, true);
+
+        gameBoard.receiveAttack(5, 6);
+        gameBoard.receiveAttack(1, 2)
+    });
+
+    test('attack on non-empty space should be false', () => {
+        expect(gameBoard.receiveAttack(5, 6)).toBeFalsy();
+    });
+
+    test('attack on non-empty space should be false', () => {
+        expect(gameBoard.receiveAttack(1, 2)).toBeFalsy();
+    });
+});
 
