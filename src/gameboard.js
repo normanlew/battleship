@@ -27,7 +27,7 @@ export class Gameboard {
                     
                     for (let j = x - 1; j >= 0 && j < this._board.length && j <= x + 1; j++) {
                         if (this._board[j][i].ship != null) {
-                            console.log("x: " + j + ", y: " + i + " is occupied")
+                            // console.log("x: " + j + ", y: " + i + " is occupied")
                             return false;
                         }
                     }

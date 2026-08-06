@@ -3,7 +3,7 @@ import {Ship} from "../src/ship.js";
 describe('test ship with no hits', () => {
     let ship;
 
-    beforeAll(() => {
+    beforeEach(() => {
         ship = new Ship(3);
     })
 
@@ -24,7 +24,7 @@ describe('test ship with no hits', () => {
 
 describe('test ship with hits', () => {
     let ship2;
-    beforeAll(() => {
+    beforeEach(() => {
         ship2 = new Ship(3);
         ship2.hit();
         ship2.hit();
@@ -42,7 +42,7 @@ describe('test ship with hits', () => {
 
 describe('test ship that is sunk', () => {
     let ship3;
-    beforeAll(() => {
+    beforeEach(() => {
         ship3 = new Ship(3);
         ship3.hit();
         ship3.hit();

@@ -181,7 +181,7 @@ describe('board with all ships sunk should report that all ships have been sunk'
         gameBoard.receiveAttack(4, 5);
         gameBoard.receiveAttack(4, 4);
         gameBoard.receiveAttack(4, 3);
-        console.log(ship.isSunk());
+        // console.log(ship.isSunk());
     });
 
     test('call to allSunk should return true', () => {
