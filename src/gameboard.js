@@ -1,7 +1,13 @@
 export class Gameboard {
     constructor() {
-        this._board = Array.from({length: 10}, () => Array(10).fill({ship: null, status: "empty"}));
+        // this._board = Array.from({length: 10}, () => Array(10).fill(Object.create({ship: null, status: "empty"})));
+        this._board = Array.from({length: 10}, () => Array.from({length:10}, () => ({ship: null, status: "empty"})));
+
         // possible status values should be: empty, hit, miss, sunk
+    }
+
+    get board() {
+        return this._board;
     }
 
     placeShip(ship, x, y, isVertical) {
@@ -20,7 +26,8 @@ export class Gameboard {
                         i >= 0; i--) {
                     
                     for (let j = x - 1; j >= 0 && j < this._board.length && j <= x + 1; j++) {
-                        if (this._board[j][i].ship !== null) {
+                        if (this._board[j][i].ship != null) {
+                            console.log("x: " + j + ", y: " + i + " is occupied")
                             return false;
                         }
                     }
@@ -45,7 +52,7 @@ export class Gameboard {
                 // and, check to make sure the requested space for the ship isn't already occupied
                 for (let i = x - 1; i >= 0 && i < this._board.length && i <= x + ship.length; i++) {
                     for (let j = y + 1; j >= y - 1 && j < this._board[0].length && j >= 0  ; j--) {
-                        if (this._board[i][j].ship !== null) {
+                        if (this._board[i][j].ship != null) {
                             return false;
                         }
                     }
@@ -67,10 +74,16 @@ export class Gameboard {
         // returning false means the attack was on a space already attacked
         // console.log("x: " + x + ", y: " + y);
         let space = this._board[x][y];
+        // console.log("x: " + x + ", y: " + y);
+        // console.log("space.status: " + space.status);
+        // console.log('x: ' + x + ', y: ' + y);
         // console.log(space);
+        // console.log('space.status: ' + space.status);
         if (space.status === "empty") {
             // console.log(x + ', ' + y + " is empty")
-            if (space.ship !== null) {
+            // console.log('space.ship is null: ' + `${space.ship == null}`);
+            if (space.ship != null) {
+                // console.log('hit');
                 space.ship.hit();
                 if (space.ship.isSunk()) {
                     space.status = "sunk";
@@ -87,5 +100,26 @@ export class Gameboard {
         else {
             return false;
         }
+    }
+
+    allSunk() {
+        // console.log('board width: ' + this._board.length + ', board height: ' + this._board[0].length);
+        for (let i = 0; i < this._board.length; i++) {
+            for (let j = this._board[0].length - 1; j >= 0; j--) {
+                // console.log('x: ' + i + ', y: ' + j);
+                // console.log(this._board.ship);
+                // console.log();
+                if (this._board[i][j].ship != null) {
+                    // console.log(this._board[i][j].ship);
+                    // this._board[i][j].ship.isSunk()
+                    // console.log('ship is not null');
+                    if (!this._board[i][j].ship.isSunk()) {
+                        // console.log("returning false");
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
