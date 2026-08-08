@@ -6,8 +6,16 @@ export class Gameboard {
         // possible status values should be: empty, hit, miss, sunk
     }
 
-    get board() {
-        return this._board;
+    // get board() {
+    //     return this._board;
+    // }
+
+    getShip(x, y) {
+        return this._board[x, y].ship;
+    }
+
+    getStatus(x, y) {
+        return this._board[x, y].status;
     }
 
     placeShip(ship, x, y, isVertical) {
