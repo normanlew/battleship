@@ -61,6 +61,12 @@ function createSquare(width_and_height, x, y) {
             if (gameBoard.hasShip(x, y)) {
                 gameBoard.receiveAttack(x, y);
                 let status = gameBoard.getStatus(x, y);
+                one_square.innerHTML = `
+                    <svg height=${width_and_height} width=${width_and_height}  
+                    xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2=${width_and_height} y2=${width_and_height} style="stroke:red;stroke-width:5" />
+                        <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
+                        </svg>`
                 if (status === "hit") {
                     one_square.classList.add("hit");
                     // draw hit graphic in square
