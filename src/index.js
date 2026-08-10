@@ -7,6 +7,10 @@ const GRID_LENGTH_AND_WIDTH = 600;
 
 let gameBoard = new Gameboard();
 
+
+let ship = new Ship(4);
+gameBoard.placeShip(ship, 5, 9, true);
+
 createGrid(10);
 
 function createGrid(dimension) {
@@ -44,5 +48,41 @@ function createSquare(width_and_height, x, y) {
             one_square.style.backgroundColor = "rgb(149, 208, 245)";
         }
     })
+
+    one_square.addEventListener("mouseout", () => {
+        // if (one_square.classList.contains("empty")) {
+            one_square.style.backgroundColor = "rgb(225, 245, 247)";
+        // }
+    })
+
+    one_square.addEventListener("click", () => {
+        if (one_square.classList.contains("empty")) {
+            one_square.classList.remove("empty");
+            if (gameBoard.hasShip(x, y)) {
+                gameBoard.receiveAttack(x, y);
+                let status = gameBoard.getStatus(x, y);
+                if (status === "hit") {
+                    one_square.classList.add("hit");
+                    // draw hit graphic in square
+                }
+                else if (status === "sunk") {
+                    one_square.classList.add("sunk");
+                    // draw sunk graphic in square as well as adjacent squares that the ship occupies
+                }
+            }
+            else {
+                // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
+                one_square.classList.add("miss");
+                one_square.innerHTML = `
+                        <svg height=${width_and_height} width=${width_and_height} 
+                        xmlns="http://www.w3.org/2000/svg">
+                        <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
+                        r="5" fill="black"/>
+                        </svg>`
+            }
+        }
+    })
+
+    // one_square.addEventListener("")
     return one_square;
 }

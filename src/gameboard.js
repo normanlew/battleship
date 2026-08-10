@@ -11,11 +11,15 @@ export class Gameboard {
     // }
 
     getShip(x, y) {
-        return this._board[x, y].ship;
+        return this._board[x][y].ship;
     }
 
     getStatus(x, y) {
-        return this._board[x, y].status;
+        return this._board[x][y].status;
+    }
+
+    hasShip(x, y) {
+        return this._board[x][y].ship != null;
     }
 
     placeShip(ship, x, y, isVertical) {
