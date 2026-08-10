@@ -50,9 +50,9 @@ function createSquare(width_and_height, x, y) {
     })
 
     one_square.addEventListener("mouseout", () => {
-        // if (one_square.classList.contains("empty")) {
+        if (!one_square.classList.contains("hit") && !one_square.classList.contains("sunk")) {
             one_square.style.backgroundColor = "rgb(225, 245, 247)";
-        // }
+        }
     })
 
     one_square.addEventListener("click", () => {
@@ -61,6 +61,7 @@ function createSquare(width_and_height, x, y) {
             if (gameBoard.hasShip(x, y)) {
                 gameBoard.receiveAttack(x, y);
                 let status = gameBoard.getStatus(x, y);
+                // console.log(status);
                 one_square.innerHTML = `
                     <svg height=${width_and_height} width=${width_and_height}  
                     xmlns="http://www.w3.org/2000/svg">
@@ -68,12 +69,14 @@ function createSquare(width_and_height, x, y) {
                         <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
                         </svg>`
                 if (status === "hit") {
+                    console.log("hit");
                     one_square.classList.add("hit");
-                    // draw hit graphic in square
                 }
                 else if (status === "sunk") {
+                    console.log("sunk");
                     one_square.classList.add("sunk");
                     // draw sunk graphic in square as well as adjacent squares that the ship occupies
+                    one_square.style.backgroundColor = "rgb(237, 176, 170)";
                 }
             }
             else {
