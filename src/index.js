@@ -70,12 +70,16 @@ function createSquare(width_and_height, x, y) {
                         </svg>`
                 one_square.style.backgroundColor = "rgb(237, 176, 170)";
                 if (status === "hit") {
-                    console.log("hit");
+                    // console.log("hit");
                     one_square.classList.add("hit");
                 }
                 else if (status === "sunk") {
-                    console.log("sunk");
+                    // console.log("sunk");
                     one_square.classList.add("sunk");
+
+                    // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
+                    // fill those in with dots
+                    // for (let i = 0; i < )
                     
                 }
             }

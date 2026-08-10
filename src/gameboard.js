@@ -11,15 +11,39 @@ export class Gameboard {
     // }
 
     getShip(x, y) {
-        return this._board[x][y].ship;
+        if (this.coordinatesOnBoard(x, y)) {
+            return this._board[x][y].ship;
+        }
+        else {
+            return null;
+        }
+        
     }
 
     getStatus(x, y) {
-        return this._board[x][y].status;
+        if (this.coordinatesOnBoard(x, y)) {
+            return this._board[x][y].status;
+        }
+        else {
+            return false;
+        }
+        
+    }
+
+    setStatus(x, y, status) {
+        if (this.coordinatesOnBoard(x, y)) {
+            this._board[x][y].status = status;
+        }
+        
     }
 
     hasShip(x, y) {
-        return this._board[x][y].ship != null;
+        if (this.coordinatesOnBoard(x, y)) {
+            return this._board[x][y].ship != null;
+        }
+        else {
+            return false;
+        }
     }
 
     placeShip(ship, x, y, isVertical) {
@@ -82,32 +106,37 @@ export class Gameboard {
     // coordinates, determines whether or not the attack hit a ship and then 
     // sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
     receiveAttack(x, y) {
-        // returning true means the attack was on an empty space.
-        // returning false means the attack was on a space already attacked
-        // console.log("x: " + x + ", y: " + y);
-        let space = this._board[x][y];
-        // console.log("x: " + x + ", y: " + y);
-        // console.log("space.status: " + space.status);
-        // console.log('x: ' + x + ', y: ' + y);
-        // console.log(space);
-        // console.log('space.status: ' + space.status);
-        if (space.status === "empty") {
-            // console.log(x + ', ' + y + " is empty")
-            // console.log('space.ship is null: ' + `${space.ship == null}`);
-            if (space.ship != null) {
-                // console.log('hit');
-                space.ship.hit();
-                if (space.ship.isSunk()) {
-                    space.status = "sunk";
+        if (this.coordinatesOnBoard(x, y)) {
+            // returning true means the attack was on an empty space.
+            // returning false means the attack was on a space already attacked
+            // console.log("x: " + x + ", y: " + y);
+            let space = this._board[x][y];
+            // console.log("x: " + x + ", y: " + y);
+            // console.log("space.status: " + space.status);
+            // console.log('x: ' + x + ', y: ' + y);
+            // console.log(space);
+            // console.log('space.status: ' + space.status);
+            if (space.status === "empty") {
+                // console.log(x + ', ' + y + " is empty")
+                // console.log('space.ship is null: ' + `${space.ship == null}`);
+                if (space.ship != null) {
+                    // console.log('hit');
+                    space.ship.hit();
+                    if (space.ship.isSunk()) {
+                        space.status = "sunk";
+                    }
+                    else {
+                        space.status = "hit";
+                    }
                 }
                 else {
-                    space.status = "hit";
+                    space.status = "miss";
                 }
+                return true;
             }
             else {
-                space.status = "miss";
+                return false;
             }
-            return true;
         }
         else {
             return false;
@@ -133,5 +162,14 @@ export class Gameboard {
             }
         }
         return true;
+    }
+
+    coordinatesOnBoard(x, y) {
+        if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
