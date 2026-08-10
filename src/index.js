@@ -68,6 +68,7 @@ function createSquare(width_and_height, x, y) {
                         <line x1="0" y1="0" x2=${width_and_height} y2=${width_and_height} style="stroke:red;stroke-width:5" />
                         <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
                         </svg>`
+                one_square.style.backgroundColor = "rgb(237, 176, 170)";
                 if (status === "hit") {
                     console.log("hit");
                     one_square.classList.add("hit");
@@ -75,8 +76,7 @@ function createSquare(width_and_height, x, y) {
                 else if (status === "sunk") {
                     console.log("sunk");
                     one_square.classList.add("sunk");
-                    // draw sunk graphic in square as well as adjacent squares that the ship occupies
-                    one_square.style.backgroundColor = "rgb(237, 176, 170)";
+                    
                 }
             }
             else {
