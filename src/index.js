@@ -31,7 +31,7 @@ function createGrid(dimension) {
 
 function createSquare(width_and_height, x, y) {
     const one_square = document.createElement("div");
-    one_square.id = String(x) + String(y);
+    one_square.id = "n" + String(x) + String(y);
     one_square.classList.add("empty");
     one_square.style.backgroundColor = "rgb(225, 245, 247)";
     one_square.style.width = width_and_height + "px";
@@ -40,6 +40,7 @@ function createSquare(width_and_height, x, y) {
     one_square.style.borderStyle = "solid"
     one_square.style.borderWidth = "1px";
     one_square.style.opacity = 1;
+    // console.log(one_square.id);
 
     let ship = gameBoard.getShip(x, y);
 
@@ -79,23 +80,56 @@ function createSquare(width_and_height, x, y) {
 
                     // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
                     // fill those in with dots
-                    // for (let i = 0; i < )
+                    let rows = document.querySelectorAll("#gameboard > div");
+
+                    for (let i = 0; i < rows.length; i++) {
+                        let spaces = rows[i].children;
+                        for (let j = 0; j < spaces.length; j++) {
+                            let id = spaces[j].id;
+                            let x_coordinate = Number(id[1]);
+                            let y_coordinate = Number(id[2]);
+                            if (ship === gameBoard.getShip(x_coordinate, y_coordinate)) {
+                                for (let c = x_coordinate - 1; c <= x_coordinate + 1; c++) {
+                                    for (let d = y_coordinate - 1; d <= y_coordinate + 1; d++) {
+                                        if (gameBoard.receiveAttack(c, d)) {
+                                            let id_square = "n" + String(c) + String(d)
+                                            let adjacent_square = document.querySelector("#" + id_square);
+                                            adjacent_square.classList.add("miss");
+                                            drawDot(adjacent_square, width_and_height);
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    
                     
                 }
             }
             else {
                 // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
                 one_square.classList.add("miss");
-                one_square.innerHTML = `
-                        <svg height=${width_and_height} width=${width_and_height} 
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
-                        r="5" fill="black"/>
-                        </svg>`
+                drawDot(one_square, width_and_height);
+                // one_square.innerHTML = `
+                //         <svg height=${width_and_height} width=${width_and_height} 
+                //         xmlns="http://www.w3.org/2000/svg">
+                //         <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
+                //         r="5" fill="black"/>
+                //         </svg>`
             }
         }
     })
 
     // one_square.addEventListener("")
     return one_square;
+}
+
+function drawDot(square, width_and_height) {
+    square.innerHTML = `
+            <svg height=${width_and_height} width=${width_and_height} 
+            xmlns="http://www.w3.org/2000/svg">
+            <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
+            r="5" fill="black"/>
+            </svg>`
 }
