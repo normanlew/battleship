@@ -10,6 +10,11 @@ body {
     width: 100vw;
 }
 
+.row {
+    margin: 0;
+    padding: 0;
+}
+
 #gameboard {
     height: 100%;
     display: grid;
@@ -19,15 +24,29 @@ body {
 #top {
     /* background-color: blue; */
     display: grid;
+    /* place-items: center; */
     grid-template-columns: 1fr 1fr;
 }
 
 #left {
     background-color: aqua;
+    display: grid;
+    place-items: center; 
+    margin: 0;
+    padding: 0;
 }
+
+#left-board {
+    display: grid;
+    place-items: center; 
+}
+
+
 
 #right {
     background-color: blueviolet;
+    /* display: grid; */
+    /* place-items: center; */
 }
 
 #bottom {
