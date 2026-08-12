@@ -53,7 +53,7 @@ export class Gameboard {
         if (isVertical) {
             // Check to make sure the ship's coordinates are all within the board
             if (x < 0 || x >= this._board.length || y >= this._board[0].length || y + 1 - ship_length < 0) {
-                console.log("1");
+                // console.log("1");
                 return false;
             }
             else {
@@ -69,12 +69,12 @@ export class Gameboard {
                     
                     // j >= 0 && j < this._board.length && 
                     for (let j = x - 1; j <= x + 1; j++) {
-                        console.log("x: " + j + ", y: " + i);
+                        // console.log("x: " + j + ", y: " + i);
                         if (j < 0 || j >= this._board.length) {
                             continue;
                         }
                         else if (this._board[j][i].ship != null) {
-                            console.log("x: " + j + ", y: " + i + " is occupied")
+                            // console.log("x: " + j + ", y: " + i + " is occupied")
                             return false;
                         }
                     }

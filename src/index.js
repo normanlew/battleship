@@ -12,27 +12,27 @@ let gameBoard1 = player1.gameBoard;
 let gameBoard2 = player2.gameBoard;
 
 
-// let ship1 = new Ship(4);
-// let ship2 = new Ship(3);
-// let ship3 = new Ship(3);
-// let ship4 = new Ship(2);
-// let ship5 = new Ship(2);
-// let ship6 = new Ship(2);
-// let ship7 = new Ship(1);
-// let ship8 = new Ship(1);
-// let ship9 = new Ship(1);
-// let ship10 = new Ship(1);
+let ship1 = new Ship(4);
+let ship2 = new Ship(3);
+let ship3 = new Ship(3);
+let ship4 = new Ship(2);
+let ship5 = new Ship(2);
+let ship6 = new Ship(2);
+let ship7 = new Ship(1);
+let ship8 = new Ship(1);
+let ship9 = new Ship(1);
+let ship10 = new Ship(1);
 
-// gameBoard1.placeShip(ship1, 5, 8, true);
-// gameBoard1.placeShip(ship2, 0, 9, false);
-// gameBoard1.placeShip(ship3, 9, 9, true);
-// gameBoard1.placeShip(ship4, 7, 4, false);
-// gameBoard1.placeShip(ship5, 7, 9, true);
-// gameBoard1.placeShip(ship6, 1, 1, false);
-// gameBoard1.placeShip(ship7, 2, 7, true);
-// gameBoard1.placeShip(ship8, 9, 2, false);
-// gameBoard1.placeShip(ship9, 5, 1, true);
-// gameBoard1.placeShip(ship10, 2, 4, false);
+gameBoard1.placeShip(ship1, 5, 8, true);
+gameBoard1.placeShip(ship2, 0, 9, false);
+gameBoard1.placeShip(ship3, 9, 9, true);
+gameBoard1.placeShip(ship4, 7, 4, false);
+gameBoard1.placeShip(ship5, 7, 9, true);
+gameBoard1.placeShip(ship6, 1, 1, false);
+gameBoard1.placeShip(ship7, 2, 7, true);
+gameBoard1.placeShip(ship8, 9, 2, false);
+gameBoard1.placeShip(ship9, 5, 1, true);
+gameBoard1.placeShip(ship10, 2, 4, false);
 
 let ship11 = new Ship(4);
 let ship12 = new Ship(3);
@@ -46,15 +46,15 @@ let ship19 = new Ship(1);
 let ship20 = new Ship(1);
 
 gameBoard2.placeShip(ship11, 0, 9, true);
-gameBoard2.placeShip(ship12, 1, 9, true);
-// gameBoard2.placeShip(ship13, 4, 9, true);
-// gameBoard2.placeShip(ship14, 6, 9, true);
-// gameBoard2.placeShip(ship15, 8, 9, true);
-gameBoard2.placeShip(ship16, 0, 5, true);
-// gameBoard2.placeShip(ship17, 2, 4, true);
-// gameBoard2.placeShip(ship18, 4, 4, true);
-// gameBoard2.placeShip(ship19, 6, 4, true);
-// gameBoard2.placeShip(ship20, 8, 4, true);
+gameBoard2.placeShip(ship12, 2, 9, true);
+gameBoard2.placeShip(ship13, 4, 9, true);
+gameBoard2.placeShip(ship14, 6, 9, true);
+gameBoard2.placeShip(ship15, 8, 9, true);
+gameBoard2.placeShip(ship16, 0, 4, true);
+gameBoard2.placeShip(ship17, 2, 4, true);
+gameBoard2.placeShip(ship18, 4, 4, true);
+gameBoard2.placeShip(ship19, 6, 4, true);
+gameBoard2.placeShip(ship20, 8, 4, true);
 
 
 createGrid(10, gameBoard1, "left_board");
@@ -158,6 +158,7 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
             else {
                 // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
                 one_square.classList.add("miss");
+                
                 drawDot(one_square, width_and_height);
                 // one_square.innerHTML = `
                 //         <svg height=${width_and_height} width=${width_and_height} 
@@ -174,6 +175,7 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
 }
 
 function drawDot(square, width_and_height) {
+    square.classList.remove("empty");
     square.innerHTML = `
             <svg height=${width_and_height} width=${width_and_height} 
             xmlns="http://www.w3.org/2000/svg">
