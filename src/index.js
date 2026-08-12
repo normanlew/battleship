@@ -5,17 +5,65 @@ import "./styles.css";
 
 const GRID_LENGTH_AND_WIDTH = 400;
 
-let gameBoard = new Gameboard();
+let player1 = new Player(false);
+let player2 = new Player(true);
+
+let gameBoard1 = player1.gameBoard;
+let gameBoard2 = player2.gameBoard;
 
 
-let ship = new Ship(4);
-gameBoard.placeShip(ship, 5, 8, true);
+// let ship1 = new Ship(4);
+// let ship2 = new Ship(3);
+// let ship3 = new Ship(3);
+// let ship4 = new Ship(2);
+// let ship5 = new Ship(2);
+// let ship6 = new Ship(2);
+// let ship7 = new Ship(1);
+// let ship8 = new Ship(1);
+// let ship9 = new Ship(1);
+// let ship10 = new Ship(1);
 
-createGrid(10);
+// gameBoard1.placeShip(ship1, 5, 8, true);
+// gameBoard1.placeShip(ship2, 0, 9, false);
+// gameBoard1.placeShip(ship3, 9, 9, true);
+// gameBoard1.placeShip(ship4, 7, 4, false);
+// gameBoard1.placeShip(ship5, 7, 9, true);
+// gameBoard1.placeShip(ship6, 1, 1, false);
+// gameBoard1.placeShip(ship7, 2, 7, true);
+// gameBoard1.placeShip(ship8, 9, 2, false);
+// gameBoard1.placeShip(ship9, 5, 1, true);
+// gameBoard1.placeShip(ship10, 2, 4, false);
 
-function createGrid(dimension) {
+let ship11 = new Ship(4);
+let ship12 = new Ship(3);
+let ship13 = new Ship(3);
+let ship14 = new Ship(2);
+let ship15 = new Ship(2);
+let ship16 = new Ship(2);
+let ship17 = new Ship(1);
+let ship18 = new Ship(1);
+let ship19 = new Ship(1);
+let ship20 = new Ship(1);
+
+gameBoard2.placeShip(ship11, 0, 9, true);
+gameBoard2.placeShip(ship12, 1, 9, true);
+// gameBoard2.placeShip(ship13, 4, 9, true);
+// gameBoard2.placeShip(ship14, 6, 9, true);
+// gameBoard2.placeShip(ship15, 8, 9, true);
+gameBoard2.placeShip(ship16, 0, 5, true);
+// gameBoard2.placeShip(ship17, 2, 4, true);
+// gameBoard2.placeShip(ship18, 4, 4, true);
+// gameBoard2.placeShip(ship19, 6, 4, true);
+// gameBoard2.placeShip(ship20, 8, 4, true);
+
+
+createGrid(10, gameBoard1, "left_board");
+
+createGrid(10, gameBoard2, "right_board");
+
+function createGrid(dimension, gameBoard, grid_div) {
     let square_length_and_width = GRID_LENGTH_AND_WIDTH / dimension;
-    const grid = document.querySelector("#left_board");
+    const grid = document.querySelector("#" + grid_div);
 
     for (let j = dimension - 1; j >= 0; j--) {  
         const row = document.createElement("div");
@@ -23,16 +71,16 @@ function createGrid(dimension) {
         row.class = "row";
         row.style.display = "flex";
         for (let i = 0; i < dimension; i++) {
-            const square = createSquare(square_length_and_width, i, j);
+            const square = createSquare(square_length_and_width, i, j, gameBoard, grid_div);
             row.appendChild(square);
         }
         grid.appendChild(row);
     }
 }
 
-function createSquare(width_and_height, x, y) {
+function createSquare(width_and_height, x, y, gameBoard, grid_div) {
     const one_square = document.createElement("div");
-    one_square.id = "n" + String(x) + String(y);
+    one_square.id = grid_div + String(x) + String(y);
     one_square.classList.add("empty");
     one_square.style.backgroundColor = "rgb(225, 245, 247)";
     one_square.style.width = width_and_height + "px";
@@ -82,20 +130,20 @@ function createSquare(width_and_height, x, y) {
 
                     // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
                     // fill those in with dots
-                    let rows = document.querySelectorAll("#left_board > div");
+                    let rows = document.querySelectorAll("#" + grid_div + " > div");
 
                     for (let i = 0; i < rows.length; i++) {
                         let spaces = rows[i].children;
                         for (let j = 0; j < spaces.length; j++) {
                             let id = spaces[j].id;
-                            let x_coordinate = Number(id[1]);
-                            let y_coordinate = Number(id[2]);
+                            let x_coordinate = Number(id[id.length - 2]);
+                            let y_coordinate = Number(id[id.length - 1]);
                             if (ship === gameBoard.getShip(x_coordinate, y_coordinate)) {
                                 for (let c = x_coordinate - 1; c <= x_coordinate + 1; c++) {
                                     for (let d = y_coordinate - 1; d <= y_coordinate + 1; d++) {
                                         if (gameBoard.receiveAttack(c, d)) {
                                             // console.log(c + " " + d);
-                                            let id_square = "n" + String(c) + String(d)
+                                            let id_square = grid_div + String(c) + String(d)
                                             let adjacent_square = document.querySelector("#" + id_square);
                                             adjacent_square.classList.add("miss");
                                             drawDot(adjacent_square, width_and_height);

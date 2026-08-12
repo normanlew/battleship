@@ -53,17 +53,28 @@ export class Gameboard {
         if (isVertical) {
             // Check to make sure the ship's coordinates are all within the board
             if (x < 0 || x >= this._board.length || y >= this._board[0].length || y + 1 - ship_length < 0) {
+                console.log("1");
                 return false;
             }
             else {
                 // Check to make sure that the ship won't be touching another ship already on the board,
                 // and, check to make sure the requested space for the ship isn't already occupied
-                for (let i = y + 1; i >= y - ship_length && i < this._board[0].length &&
-                        i >= 0; i--) {
+                //  && i < this._board[0].length &&
+                //         i >= 0
+                for (let i = y + 1; i >= y - ship_length; i--) {
+                            if (i >= this._board[0].length || i < 0) {
+                                continue;
+                            }
+                            // console.log(i);
                     
-                    for (let j = x - 1; j >= 0 && j < this._board.length && j <= x + 1; j++) {
-                        if (this._board[j][i].ship != null) {
-                            // console.log("x: " + j + ", y: " + i + " is occupied")
+                    // j >= 0 && j < this._board.length && 
+                    for (let j = x - 1; j <= x + 1; j++) {
+                        console.log("x: " + j + ", y: " + i);
+                        if (j < 0 || j >= this._board.length) {
+                            continue;
+                        }
+                        else if (this._board[j][i].ship != null) {
+                            console.log("x: " + j + ", y: " + i + " is occupied")
                             return false;
                         }
                     }
