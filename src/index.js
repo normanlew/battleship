@@ -6,7 +6,7 @@ import "./styles.css";
 const GRID_LENGTH_AND_WIDTH = 500;
 
 let gameStarted = false;
-let gameIsOver = false;
+// let gameIsOver = false;
 
 let player1 = new Player(false);
 let player2 = new Player(true);
@@ -38,33 +38,34 @@ let gameBoard2 = player2.gameBoard;
 // gameBoard1.placeShip(ship10, 2, 4, false);
 
 toggleShip(player1, "left_board");
+toggleShip(player2, "right_board");
 
-let ship11 = new Ship(4);
-let ship12 = new Ship(3);
-let ship13 = new Ship(3);
-let ship14 = new Ship(2);
-let ship15 = new Ship(2);
-let ship16 = new Ship(2);
-let ship17 = new Ship(1);
-let ship18 = new Ship(1);
-let ship19 = new Ship(1);
-let ship20 = new Ship(1);
+// let ship11 = new Ship(4);
+// let ship12 = new Ship(3);
+// let ship13 = new Ship(3);
+// let ship14 = new Ship(2);
+// let ship15 = new Ship(2);
+// let ship16 = new Ship(2);
+// let ship17 = new Ship(1);
+// let ship18 = new Ship(1);
+// let ship19 = new Ship(1);
+// let ship20 = new Ship(1);
 
-gameBoard2.placeShip(ship11, 0, 9, true);
-gameBoard2.placeShip(ship12, 2, 9, true);
-gameBoard2.placeShip(ship13, 4, 9, true);
-gameBoard2.placeShip(ship14, 6, 9, true);
-gameBoard2.placeShip(ship15, 8, 9, true);
-gameBoard2.placeShip(ship16, 0, 4, true);
-gameBoard2.placeShip(ship17, 2, 4, true);
-gameBoard2.placeShip(ship18, 4, 4, true);
-gameBoard2.placeShip(ship19, 6, 4, true);
-gameBoard2.placeShip(ship20, 8, 4, true);
+// gameBoard2.placeShip(ship11, 0, 9, true);
+// gameBoard2.placeShip(ship12, 2, 9, true);
+// gameBoard2.placeShip(ship13, 4, 9, true);
+// gameBoard2.placeShip(ship14, 6, 9, true);
+// gameBoard2.placeShip(ship15, 8, 9, true);
+// gameBoard2.placeShip(ship16, 0, 4, true);
+// gameBoard2.placeShip(ship17, 2, 4, true);
+// gameBoard2.placeShip(ship18, 4, 4, true);
+// gameBoard2.placeShip(ship19, 6, 4, true);
+// gameBoard2.placeShip(ship20, 8, 4, true);
 
 
 // createGrid(10, gameBoard1, "left_board");
 
-createGrid(10, gameBoard2, "right_board");
+// createGrid(10, gameBoard2, "right_board");
 
 function createGrid(dimension, gameBoard, grid_div) {
     let square_length_and_width = GRID_LENGTH_AND_WIDTH / dimension;
@@ -98,60 +99,68 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
 
     let ship = gameBoard.getShip(x, y);
 
-    one_square.addEventListener("mouseenter", () => {
-        if (one_square.classList.contains("empty")) {
-            one_square.style.backgroundColor = "rgb(149, 208, 245)";
+    if (grid_div === "left_board") {
+        if (ship !== null) {
+            one_square.style.backgroundColor = "rgb(237, 176, 170)";
         }
-    })
+    }
 
-    one_square.addEventListener("mouseout", () => {
-        if (!one_square.classList.contains("hit") && !one_square.classList.contains("sunk")) {
-            one_square.style.backgroundColor = "rgb(225, 245, 247)";
-        }
-    })
+    else {
+        one_square.addEventListener("mouseenter", () => {
+            if (one_square.classList.contains("empty")) {
+                one_square.style.backgroundColor = "rgb(149, 208, 245)";
+            }
+        })
 
-    one_square.addEventListener("click", () => {
-        if (one_square.classList.contains("empty")) {
-            one_square.classList.remove("empty");
-            if (gameBoard.hasShip(x, y)) {
-                gameBoard.receiveAttack(x, y);
-                let status = gameBoard.getStatus(x, y);
-                // console.log(status);
-                one_square.innerHTML = `
-                    <svg height=${width_and_height} width=${width_and_height}  
-                    xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0" y1="0" x2=${width_and_height} y2=${width_and_height} style="stroke:red;stroke-width:5" />
-                        <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
-                        </svg>`
-                one_square.style.backgroundColor = "rgb(237, 176, 170)";
-                if (status === "hit") {
-                    // console.log("hit");
-                    one_square.classList.add("hit");
-                }
-                else if (status === "sunk") {
-                    // console.log("sunk");
-                    one_square.classList.add("sunk");
-                    
+        one_square.addEventListener("mouseout", () => {
+            if (!one_square.classList.contains("hit") && !one_square.classList.contains("sunk")) {
+                one_square.style.backgroundColor = "rgb(225, 245, 247)";
+            }
+        })
 
-                    // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
-                    // fill those in with dots
-                    let rows = document.querySelectorAll("#" + grid_div + " > div");
+        one_square.addEventListener("click", () => {
+            if (one_square.classList.contains("empty")) {
+                one_square.classList.remove("empty");
+                if (gameBoard.hasShip(x, y)) {
+                    gameBoard.receiveAttack(x, y);
+                    let status = gameBoard.getStatus(x, y);
+                    // console.log(status);
+                    one_square.innerHTML = `
+                        <svg height=${width_and_height} width=${width_and_height}  
+                        xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2=${width_and_height} y2=${width_and_height} style="stroke:red;stroke-width:5" />
+                            <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
+                            </svg>`
+                    one_square.style.backgroundColor = "rgb(237, 176, 170)";
+                    if (status === "hit") {
+                        // console.log("hit");
+                        one_square.classList.add("hit");
+                    }
+                    else if (status === "sunk") {
+                        // console.log("sunk");
+                        one_square.classList.add("sunk");
+                        
 
-                    for (let i = 0; i < rows.length; i++) {
-                        let spaces = rows[i].children;
-                        for (let j = 0; j < spaces.length; j++) {
-                            let id = spaces[j].id;
-                            let x_coordinate = Number(id[id.length - 2]);
-                            let y_coordinate = Number(id[id.length - 1]);
-                            if (ship === gameBoard.getShip(x_coordinate, y_coordinate)) {
-                                for (let c = x_coordinate - 1; c <= x_coordinate + 1; c++) {
-                                    for (let d = y_coordinate - 1; d <= y_coordinate + 1; d++) {
-                                        if (gameBoard.receiveAttack(c, d)) {
-                                            // console.log(c + " " + d);
-                                            let id_square = grid_div + String(c) + String(d)
-                                            let adjacent_square = document.querySelector("#" + id_square);
-                                            adjacent_square.classList.add("miss");
-                                            drawDot(adjacent_square, width_and_height);
+                        // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
+                        // fill those in with dots
+                        let rows = document.querySelectorAll("#" + grid_div + " > div");
+
+                        for (let i = 0; i < rows.length; i++) {
+                            let spaces = rows[i].children;
+                            for (let j = 0; j < spaces.length; j++) {
+                                let id = spaces[j].id;
+                                let x_coordinate = Number(id[id.length - 2]);
+                                let y_coordinate = Number(id[id.length - 1]);
+                                if (ship === gameBoard.getShip(x_coordinate, y_coordinate)) {
+                                    for (let c = x_coordinate - 1; c <= x_coordinate + 1; c++) {
+                                        for (let d = y_coordinate - 1; d <= y_coordinate + 1; d++) {
+                                            if (gameBoard.receiveAttack(c, d)) {
+                                                // console.log(c + " " + d);
+                                                let id_square = grid_div + String(c) + String(d)
+                                                let adjacent_square = document.querySelector("#" + id_square);
+                                                adjacent_square.classList.add("miss");
+                                                drawDot(adjacent_square, width_and_height);
+                                            }
                                         }
                                     }
                                 }
@@ -159,21 +168,22 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
                         }
                     }
                 }
+                else {
+                    // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
+                    one_square.classList.add("miss");
+                    
+                    drawDot(one_square, width_and_height);
+                    // one_square.innerHTML = `
+                    //         <svg height=${width_and_height} width=${width_and_height} 
+                    //         xmlns="http://www.w3.org/2000/svg">
+                    //         <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
+                    //         r="5" fill="black"/>
+                    //         </svg>`
+                }
             }
-            else {
-                // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
-                one_square.classList.add("miss");
-                
-                drawDot(one_square, width_and_height);
-                // one_square.innerHTML = `
-                //         <svg height=${width_and_height} width=${width_and_height} 
-                //         xmlns="http://www.w3.org/2000/svg">
-                //         <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
-                //         r="5" fill="black"/>
-                //         </svg>`
-            }
-        }
-    })
+        })
+
+    }
 
     // one_square.addEventListener("")
     return one_square;
@@ -206,17 +216,14 @@ function toggleShip(player, grid_div) {
                 }
             }
         }
-        console.log(ship.length);
+        // console.log(ship.length);
         
         let space = Math.floor(Math.random() * open.length);
         let coordinates = open[space];
-        console.log(coordinates);
+        // console.log(coordinates);
 
         gameBoard.placeShip(ship, coordinates[0], coordinates[1], isVertical);
     });
 
     createGrid(10, gameBoard, grid_div);
-
-
-
 }
