@@ -10,6 +10,10 @@ export class Gameboard {
     //     return this._board;
     // }
 
+    clearBoard() {
+        this._board = Array.from({length: 10}, () => Array.from({length:10}, () => ({ship: null, status: "empty"})));
+    }
+
     getShip(x, y) {
         if (this.coordinatesOnBoard(x, y)) {
             return this._board[x][y].ship;
@@ -44,6 +48,82 @@ export class Gameboard {
         else {
             return false;
         }
+    }
+
+    // check to see if it is possible to place the ship at the location specified
+    canPlaceShip(ship, x, y, isVertical) {
+        let ship_length = ship.length;
+        // let spaceIsClear = true;
+
+        if (isVertical) {
+            // Check to make sure the ship's coordinates are all within the board
+            if (x < 0 || x >= this._board.length || y >= this._board[0].length || y + 1 - ship_length < 0) {
+                // console.log("1");
+                return false;
+            }
+            else {
+                // Check to make sure that the ship won't be touching another ship already on the board,
+                // and, check to make sure the requested space for the ship isn't already occupied
+                //  && i < this._board[0].length &&
+                //         i >= 0
+                for (let i = y + 1; i >= y - ship_length; i--) {
+                            if (i >= this._board[0].length || i < 0) {
+                                continue;
+                            }
+                            // console.log(i);
+                    
+                    // j >= 0 && j < this._board.length && 
+                    for (let j = x - 1; j <= x + 1; j++) {
+                        // console.log("x: " + j + ", y: " + i);
+                        if (j < 0 || j >= this._board.length) {
+                            continue;
+                        }
+                        else if (this._board[j][i].ship != null) {
+                            // console.log("x: " + j + ", y: " + i + " is occupied")
+                            return false;
+                        }
+                    }
+                }
+            }
+            // The area is clear to place the ship
+            // for (let i = y; i > y - ship_length; i--) {
+            //     this._board[x][i].ship = ship;
+            //     // console.log("x: " + x + ", y: " + i);
+            //     // console.log(this._board[x][i].ship)
+            // }
+
+        }
+        // ship placement is horizontal
+        else {
+            // Check to make sure the ship's coordinates are all within the board
+            if (y < 0 || y >= this._board[0].length || x < 0 || x + ship.length - 1 >= this._board.length) {
+                return false;
+            }
+            else {
+                // Check to make sure that the ship won't be touching another ship already on the board,
+                // and, check to make sure the requested space for the ship isn't already occupied
+                for (let i = x - 1; i <= x + ship.length; i++) {
+                    // i >= 0 && i < this._board.length && 
+                    if (i < 0 || i >= this._board.length) {
+                        continue;
+                    }
+                    for (let j = y + 1; j >= y - 1; j--) {
+                        //  && j < this._board[0].length && j >= 0  
+                        if (j < 0 || j >= this._board[0].length) {
+                            continue;
+                        }
+                        if (this._board[i][j].ship != null) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            // The area is clear to place the ship
+            // for (let i = x; i < x + ship_length; i++) {
+            //     this._board[i][y].ship = ship;
+            // }
+        }
+        return true;
     }
 
     placeShip(ship, x, y, isVertical) {
@@ -97,8 +177,16 @@ export class Gameboard {
             else {
                 // Check to make sure that the ship won't be touching another ship already on the board,
                 // and, check to make sure the requested space for the ship isn't already occupied
-                for (let i = x - 1; i >= 0 && i < this._board.length && i <= x + ship.length; i++) {
-                    for (let j = y + 1; j >= y - 1 && j < this._board[0].length && j >= 0  ; j--) {
+                for (let i = x - 1; i <= x + ship.length; i++) {
+                    // i >= 0 && i < this._board.length && 
+                    if (i < 0 || i >= this._board.length) {
+                        continue;
+                    }
+                    for (let j = y + 1; j >= y - 1; j--) {
+                        //  && j < this._board[0].length && j >= 0  
+                        if (j < 0 || j >= this._board[0].length) {
+                            continue;
+                        }
                         if (this._board[i][j].ship != null) {
                             return false;
                         }

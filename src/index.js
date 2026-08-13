@@ -3,7 +3,10 @@ import {Ship} from "../src/ship.js";
 import {Player} from "../src/player.js";
 import "./styles.css";
 
-const GRID_LENGTH_AND_WIDTH = 400;
+const GRID_LENGTH_AND_WIDTH = 500;
+
+let gameStarted = false;
+let gameIsOver = false;
 
 let player1 = new Player(false);
 let player2 = new Player(true);
@@ -12,27 +15,29 @@ let gameBoard1 = player1.gameBoard;
 let gameBoard2 = player2.gameBoard;
 
 
-let ship1 = new Ship(4);
-let ship2 = new Ship(3);
-let ship3 = new Ship(3);
-let ship4 = new Ship(2);
-let ship5 = new Ship(2);
-let ship6 = new Ship(2);
-let ship7 = new Ship(1);
-let ship8 = new Ship(1);
-let ship9 = new Ship(1);
-let ship10 = new Ship(1);
+// let ship1 = new Ship(4);
+// let ship2 = new Ship(3);
+// let ship3 = new Ship(3);
+// let ship4 = new Ship(2);
+// let ship5 = new Ship(2);
+// let ship6 = new Ship(2);
+// let ship7 = new Ship(1);
+// let ship8 = new Ship(1);
+// let ship9 = new Ship(1);
+// let ship10 = new Ship(1);
 
-gameBoard1.placeShip(ship1, 5, 8, true);
-gameBoard1.placeShip(ship2, 0, 9, false);
-gameBoard1.placeShip(ship3, 9, 9, true);
-gameBoard1.placeShip(ship4, 7, 4, false);
-gameBoard1.placeShip(ship5, 7, 9, true);
-gameBoard1.placeShip(ship6, 1, 1, false);
-gameBoard1.placeShip(ship7, 2, 7, true);
-gameBoard1.placeShip(ship8, 9, 2, false);
-gameBoard1.placeShip(ship9, 5, 1, true);
-gameBoard1.placeShip(ship10, 2, 4, false);
+// gameBoard1.placeShip(ship1, 5, 8, true);
+// gameBoard1.placeShip(ship2, 0, 9, false);
+// gameBoard1.placeShip(ship3, 9, 9, true);
+// gameBoard1.placeShip(ship4, 7, 4, false);
+// gameBoard1.placeShip(ship5, 7, 9, true);
+// gameBoard1.placeShip(ship6, 1, 1, false);
+// gameBoard1.placeShip(ship7, 2, 7, true);
+// gameBoard1.placeShip(ship8, 9, 2, false);
+// gameBoard1.placeShip(ship9, 5, 1, true);
+// gameBoard1.placeShip(ship10, 2, 4, false);
+
+toggleShip(player1, "left_board");
 
 let ship11 = new Ship(4);
 let ship12 = new Ship(3);
@@ -57,7 +62,7 @@ gameBoard2.placeShip(ship19, 6, 4, true);
 gameBoard2.placeShip(ship20, 8, 4, true);
 
 
-createGrid(10, gameBoard1, "left_board");
+// createGrid(10, gameBoard1, "left_board");
 
 createGrid(10, gameBoard2, "right_board");
 
@@ -182,4 +187,36 @@ function drawDot(square, width_and_height) {
             <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
             r="5" fill="black"/>
             </svg>`
+}
+
+function toggleShip(player, grid_div) {
+    player.newGameBoard();
+    let gameBoard = player.gameBoard;
+
+    let shipArray = [new Ship(4), new Ship(3), new Ship(3), new Ship(2), new Ship(2), new Ship(2),
+        new Ship(1), new Ship(1), new Ship(1), new Ship(1)];
+
+    shipArray.forEach((ship) => {
+        let isVertical = Math.random() < .5;
+        let open = [];
+        for (let x = 0; x < 10; x++) {
+            for (let y = 0; y < 10; y++) {
+                if (gameBoard.canPlaceShip(ship, x, y, isVertical)) {
+                    open.push([x, y]);
+                }
+            }
+        }
+        console.log(ship.length);
+        
+        let space = Math.floor(Math.random() * open.length);
+        let coordinates = open[space];
+        console.log(coordinates);
+
+        gameBoard.placeShip(ship, coordinates[0], coordinates[1], isVertical);
+    });
+
+    createGrid(10, gameBoard, grid_div);
+
+
+
 }

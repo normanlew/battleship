@@ -17,6 +17,10 @@ export class Player {
         return this._player_type;
     }
 
+    newGameBoard() {
+        this._gameBoard = new Gameboard();
+    }
+
     get gameBoard() {
         return this._gameBoard;
     }
