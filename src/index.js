@@ -1,11 +1,14 @@
 import {Gameboard} from "../src/gameboard.js";
 import {Ship} from "../src/ship.js";
 import {Player} from "../src/player.js";
+// import { waitUntil, WAIT_FOREVER } from 'async-wait-until';
 import "./styles.css";
 
 const GRID_LENGTH_AND_WIDTH = 500;
 
 let gameStarted = false;
+let player1Moved = false;
+let player2Moved = false;
 // let gameIsOver = false;
 
 let player1 = new Player(false);
@@ -13,6 +16,90 @@ let player2 = new Player(true);
 
 let gameBoard1 = player1.gameBoard;
 let gameBoard2 = player2.gameBoard;
+
+let toggle_button = document.querySelector("#toggle");
+toggle_button.addEventListener("click", (e) => {
+    toggleShip(player1, "left_board");
+});
+
+let start_button = document.querySelector("#start");
+start_button.addEventListener("click", (e) => {
+    // let messages = document.querySelector("#bottom_right");
+    if (!gameStarted) {
+        console.log("game starting");
+        gameStarted = true;
+        toggle_button.style.backgroundColor = "rgba(20, 20, 17, 0.851)"
+        toggle_button.disabled = true;
+        start_button.disabled = true;
+
+        playGame();
+        // let player1Turn = Math.random() < .5;
+
+        // let p = document.createElement("p");
+        // p.innerHTML = "Your move";
+        // messages.appendChild(p);
+        // while (gameStarted) {
+        //     messages.replaceChildren();
+        //     if (player1Turn) {
+        //         console.log("player1 turn");
+        //         // player1Moved = false;
+        //         // player1Turn = false;
+        //         let p = document.createElement("p");
+        //         p.innerHTML = "Your move";
+        //         messages.appendChild(p);
+
+        //         // waitForClickSequence();
+
+        //     }
+        //     else {
+        //         console.log("player2 turn");
+        //     }
+        // }
+    }
+});
+
+async function playGame() {
+    let counter = 1;
+    // let player1Turn = Math.random() < .5;
+    let player1Turn = true;;
+    // 
+    let messages = document.querySelector("#bottom_right");
+    // p.innerHTML = "Your move";
+    // messages.appendChild(p);
+    while (gameStarted) {
+        messages.replaceChildren();
+        if (player1Turn) {
+            console.log("player1 turn");
+            // player1Moved = false;
+            // player1Turn = false;
+            let p = document.createElement("p");
+            p.innerHTML = "Your move";
+            messages.appendChild(p);
+            counter++;
+            let event = await waitForClick("right_board");
+            console.log("click!")
+            console.log(event.target.classList);
+            if (event.target.classList.contains("empty")) {
+                console.log("switcing to player1");
+                player1Turn = true;
+            }
+
+            // await waitForClick("left_board");
+
+            // waitForClickSequence();
+
+        }
+        else {
+            // counter++;
+            // let event = await waitForClick("right_board");
+            // console.log("click!")
+            // if (event.target.classList.contains("empty")) {
+            //     console.log("switcing to player1");
+            //     player1Turn = true;
+            // }
+        }
+    }
+}
 
 
 // let ship1 = new Ship(4);
@@ -70,6 +157,7 @@ toggleShip(player2, "right_board");
 function createGrid(dimension, gameBoard, grid_div) {
     let square_length_and_width = GRID_LENGTH_AND_WIDTH / dimension;
     const grid = document.querySelector("#" + grid_div);
+    grid.replaceChildren();
 
     for (let j = dimension - 1; j >= 0; j--) {  
         const row = document.createElement("div");
@@ -103,8 +191,21 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
         if (ship !== null) {
             one_square.style.backgroundColor = "rgb(237, 176, 170)";
         }
-    }
+        // else {
+        //     one_square.addEventListener("mouseenter", () => {
+        //         if (one_square.classList.contains("empty")) {
+        //             one_square.style.backgroundColor = "rgb(149, 208, 245)";
+        //         }
+        //     });        
+        // }
 
+        // one_square.addEventListener("mouseenter", () => {
+        //     if (one_square.classList.contains("empty") && ship == null) {
+        //         one_square.style.backgroundColor = "rgb(149, 208, 245)";
+        //     }
+        // })
+    }
+    
     else {
         one_square.addEventListener("mouseenter", () => {
             if (one_square.classList.contains("empty")) {
@@ -226,4 +327,16 @@ function toggleShip(player, grid_div) {
     });
 
     createGrid(10, gameBoard, grid_div);
+}
+
+function waitForClick(elementId) {
+    return new Promise ((resolve) => {
+        const element = document.getElementById(elementId);
+
+        element.addEventListener('click', resolve, {once: true});
+    });
+}
+
+async function waitForClickSequence() {
+    await waitForClick("right_board");
 }
