@@ -14,6 +14,9 @@ let player2Moved = false;
 let player1 = new Player(false);
 let player2 = new Player(true);
 
+// let player1Turn = Math.random() < .5;
+let player1Turn = true;;
+
 let gameBoard1 = player1.gameBoard;
 let gameBoard2 = player2.gameBoard;
 
@@ -59,14 +62,21 @@ start_button.addEventListener("click", (e) => {
 });
 
 async function playGame() {
-    let counter = 1;
-    // let player1Turn = Math.random() < .5;
-    let player1Turn = true;;
+    let gameBoard1 = player1.gameBoard;
+    let gameBoard2 = player2.gameBoard;
+    console.log("in playGame");
+    // let counter = 100;
+    // let movesLeftInRound = 1;
     // 
     let messages = document.querySelector("#bottom_right");
     // p.innerHTML = "Your move";
     // messages.appendChild(p);
-    while (gameStarted) {
+    console.log("gameBoard1.allSunk(): " + gameBoard1.allSunk() + ", gameBoard2.allSunk(): " + gameBoard2.allSunk());
+    while (!gameBoard1.allSunk() && !gameBoard2.allSunk()) {
+            // while (true) {
+
+        console.log("neither board has all sunk ships");
+        // console.log("counter: " + counter + ", move left in round: " + movesLeftInRound);
         messages.replaceChildren();
         if (player1Turn) {
             console.log("player1 turn");
@@ -75,14 +85,13 @@ async function playGame() {
             let p = document.createElement("p");
             p.innerHTML = "Your move";
             messages.appendChild(p);
-            counter++;
-            let event = await waitForClick("right_board");
-            console.log("click!")
-            console.log(event.target.classList);
-            if (event.target.classList.contains("empty")) {
-                console.log("switcing to player1");
-                player1Turn = true;
-            }
+            await waitForClick("right_board");
+            console.log("click player 1")
+            // console.log(event.target.classList);
+            // if (event.target.classList.contains("empty")) {
+            //     console.log("switcing to player1");
+            //     player1Turn = true;
+            // }
 
             // await waitForClick("left_board");
 
@@ -90,6 +99,34 @@ async function playGame() {
 
         }
         else {
+            // player 2's turn
+
+            // get the number of blank spaces on player 1's board
+            let emptySpaces = 0;
+            for (let x = 0; x < 10; x++) {
+                for (let y = 0; y < 10; y++) {
+                    let square = document.getElementById("left_board" + String(x) + String(y));
+                    if (square.classList.contains("empty")) {
+                        emptySpaces++;
+                    }
+                }
+            }
+            console.log("emptySpaces: " + emptySpaces);
+            console.log("player2 turn");
+            let p = document.createElement("p");
+            p.innerHTML = "Computer's move";
+            messages.appendChild(p);
+
+            await setTimeout(() => {
+                let index = Math.floor(Math.random() * emptySpaces);
+                console.log("setTimeout index: " + index);
+                let square = getSquareAtNumber(index);
+                console.log(square);
+                square.click();
+                // player1Turn = true;
+            }, 3000);
+            await waitForClick("left_board");
+            player1Turn = true;
             // counter++;
             // let event = await waitForClick("right_board");
             // console.log("click!")
@@ -98,61 +135,20 @@ async function playGame() {
             //     player1Turn = true;
             // }
         }
+
+        // if (movesLeftInRound === 0) {
+        //     movesLeftInRound = 1;
+        //     counter--;
+        // }
+        // else {
+        //     movesLeftInRound--;
+        // }
     }
 }
-
-
-// let ship1 = new Ship(4);
-// let ship2 = new Ship(3);
-// let ship3 = new Ship(3);
-// let ship4 = new Ship(2);
-// let ship5 = new Ship(2);
-// let ship6 = new Ship(2);
-// let ship7 = new Ship(1);
-// let ship8 = new Ship(1);
-// let ship9 = new Ship(1);
-// let ship10 = new Ship(1);
-
-// gameBoard1.placeShip(ship1, 5, 8, true);
-// gameBoard1.placeShip(ship2, 0, 9, false);
-// gameBoard1.placeShip(ship3, 9, 9, true);
-// gameBoard1.placeShip(ship4, 7, 4, false);
-// gameBoard1.placeShip(ship5, 7, 9, true);
-// gameBoard1.placeShip(ship6, 1, 1, false);
-// gameBoard1.placeShip(ship7, 2, 7, true);
-// gameBoard1.placeShip(ship8, 9, 2, false);
-// gameBoard1.placeShip(ship9, 5, 1, true);
-// gameBoard1.placeShip(ship10, 2, 4, false);
 
 toggleShip(player1, "left_board");
 toggleShip(player2, "right_board");
 
-// let ship11 = new Ship(4);
-// let ship12 = new Ship(3);
-// let ship13 = new Ship(3);
-// let ship14 = new Ship(2);
-// let ship15 = new Ship(2);
-// let ship16 = new Ship(2);
-// let ship17 = new Ship(1);
-// let ship18 = new Ship(1);
-// let ship19 = new Ship(1);
-// let ship20 = new Ship(1);
-
-// gameBoard2.placeShip(ship11, 0, 9, true);
-// gameBoard2.placeShip(ship12, 2, 9, true);
-// gameBoard2.placeShip(ship13, 4, 9, true);
-// gameBoard2.placeShip(ship14, 6, 9, true);
-// gameBoard2.placeShip(ship15, 8, 9, true);
-// gameBoard2.placeShip(ship16, 0, 4, true);
-// gameBoard2.placeShip(ship17, 2, 4, true);
-// gameBoard2.placeShip(ship18, 4, 4, true);
-// gameBoard2.placeShip(ship19, 6, 4, true);
-// gameBoard2.placeShip(ship20, 8, 4, true);
-
-
-// createGrid(10, gameBoard1, "left_board");
-
-// createGrid(10, gameBoard2, "right_board");
 
 function createGrid(dimension, gameBoard, grid_div) {
     let square_length_and_width = GRID_LENGTH_AND_WIDTH / dimension;
@@ -191,37 +187,11 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
         if (ship !== null) {
             one_square.style.backgroundColor = "rgb(237, 176, 170)";
         }
-        // else {
-        //     one_square.addEventListener("mouseenter", () => {
-        //         if (one_square.classList.contains("empty")) {
-        //             one_square.style.backgroundColor = "rgb(149, 208, 245)";
-        //         }
-        //     });        
-        // }
-
-        // one_square.addEventListener("mouseenter", () => {
-        //     if (one_square.classList.contains("empty") && ship == null) {
-        //         one_square.style.backgroundColor = "rgb(149, 208, 245)";
-        //     }
-        // })
-    }
-    
-    else {
-        one_square.addEventListener("mouseenter", () => {
-            if (one_square.classList.contains("empty")) {
-                one_square.style.backgroundColor = "rgb(149, 208, 245)";
-            }
-        })
-
-        one_square.addEventListener("mouseout", () => {
-            if (!one_square.classList.contains("hit") && !one_square.classList.contains("sunk")) {
-                one_square.style.backgroundColor = "rgb(225, 245, 247)";
-            }
-        })
 
         one_square.addEventListener("click", () => {
             if (one_square.classList.contains("empty")) {
                 one_square.classList.remove("empty");
+                player1Turn = false;
                 if (gameBoard.hasShip(x, y)) {
                     gameBoard.receiveAttack(x, y);
                     let status = gameBoard.getStatus(x, y);
@@ -236,6 +206,16 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
                     if (status === "hit") {
                         // console.log("hit");
                         one_square.classList.add("hit");
+
+                        // Place dots on squares diagnol to this hit
+                        let diagnol = [[x + 1, y + 1], [x + 1, y - 1], [x - 1, y - 1], [x - 1, y + 1]];
+
+                        diagnol.forEach((item) => {
+                            if (gameBoard.receiveAttack(item[0], item[1])) {
+                                let diagnolSquare = document.getElementById(grid_div + String(item[0] + String(item[1])));
+                                drawDot(diagnolSquare, width_and_height);
+                            }
+                        });
                     }
                     else if (status === "sunk") {
                         // console.log("sunk");
@@ -283,7 +263,109 @@ function createSquare(width_and_height, x, y, gameBoard, grid_div) {
                 }
             }
         })
+        // else {
+        //     one_square.addEventListener("mouseenter", () => {
+        //         if (one_square.classList.contains("empty")) {
+        //             one_square.style.backgroundColor = "rgb(149, 208, 245)";
+        //         }
+        //     });        
+        // }
 
+        // one_square.addEventListener("mouseenter", () => {
+        //     if (one_square.classList.contains("empty") && ship == null) {
+        //         one_square.style.backgroundColor = "rgb(149, 208, 245)";
+        //     }
+        // })
+    }
+    
+    else {
+        one_square.addEventListener("mouseenter", () => {
+            if (one_square.classList.contains("empty")) {
+                one_square.style.backgroundColor = "rgb(149, 208, 245)";
+            }
+        })
+
+        one_square.addEventListener("mouseout", () => {
+            if (!one_square.classList.contains("hit") && !one_square.classList.contains("sunk")) {
+                one_square.style.backgroundColor = "rgb(225, 245, 247)";
+            }
+        })
+
+        one_square.addEventListener("click", () => {
+            if (one_square.classList.contains("empty")) {
+                one_square.classList.remove("empty");
+                player1Turn = false;
+                if (gameBoard.hasShip(x, y)) {
+                    gameBoard.receiveAttack(x, y);
+                    let status = gameBoard.getStatus(x, y);
+                    // console.log(status);
+                    one_square.innerHTML = `
+                        <svg height=${width_and_height} width=${width_and_height}  
+                        xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2=${width_and_height} y2=${width_and_height} style="stroke:red;stroke-width:5" />
+                            <line x1="0" y1=${width_and_height} x2=${width_and_height} y2="-0" style="stroke:red;stroke-width:5" />
+                            </svg>`
+                    one_square.style.backgroundColor = "rgb(237, 176, 170)";
+                    if (status === "hit") {
+                        // console.log("hit");
+                        one_square.classList.add("hit");
+
+                        // Place dots on squares diagnol to this hit
+                        let diagnol = [[x + 1, y + 1], [x + 1, y - 1], [x - 1, y - 1], [x - 1, y + 1]];
+
+                        diagnol.forEach((item) => {
+                            if (gameBoard.receiveAttack(item[0], item[1])) {
+                                let diagnolSquare = document.getElementById(grid_div + String(item[0] + String(item[1])));
+                                drawDot(diagnolSquare, width_and_height);
+                            }
+                        });
+                    }
+                    else if (status === "sunk") {
+                        // console.log("sunk");
+                        one_square.classList.add("sunk");
+                        
+
+                        // check entire board for spaces that the ship occupies.  For empty spaces that touch the sunk ship, 
+                        // fill those in with dots
+                        let rows = document.querySelectorAll("#" + grid_div + " > div");
+
+                        for (let i = 0; i < rows.length; i++) {
+                            let spaces = rows[i].children;
+                            for (let j = 0; j < spaces.length; j++) {
+                                let id = spaces[j].id;
+                                let x_coordinate = Number(id[id.length - 2]);
+                                let y_coordinate = Number(id[id.length - 1]);
+                                if (ship === gameBoard.getShip(x_coordinate, y_coordinate)) {
+                                    for (let c = x_coordinate - 1; c <= x_coordinate + 1; c++) {
+                                        for (let d = y_coordinate - 1; d <= y_coordinate + 1; d++) {
+                                            if (gameBoard.receiveAttack(c, d)) {
+                                                // console.log(c + " " + d);
+                                                let id_square = grid_div + String(c) + String(d)
+                                                let adjacent_square = document.querySelector("#" + id_square);
+                                                adjacent_square.classList.add("miss");
+                                                drawDot(adjacent_square, width_and_height);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    // The space does not contain a ship.  Draw the miss icon and change the class to "miss"
+                    one_square.classList.add("miss");
+                    
+                    drawDot(one_square, width_and_height);
+                    // one_square.innerHTML = `
+                    //         <svg height=${width_and_height} width=${width_and_height} 
+                    //         xmlns="http://www.w3.org/2000/svg">
+                    //         <circle class="svg-circle" cx=${width_and_height/2} cy=${width_and_height/2} 
+                    //         r="5" fill="black"/>
+                    //         </svg>`
+                }
+            }
+        })
     }
 
     // one_square.addEventListener("")
@@ -337,6 +419,27 @@ function waitForClick(elementId) {
     });
 }
 
-async function waitForClickSequence() {
-    await waitForClick("right_board");
+// async function waitForClickSequence() {
+//     await waitForClick("right_board");
+// }
+
+function getSquareAtNumber(number) {
+    console.log("number: " + number);
+    for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 10; y++) {
+            // console.log("x: " + x + ", y: " + y);
+            let square = document.getElementById("left_board" + x + y);
+            // console.log(square);
+            if (square.classList.contains("empty")) {
+                if (number === 0) {
+                    return square;
+                }
+                else {
+                    number--;
+                    continue;
+                }
+            }
+        }
+    }
+    return null;
 }

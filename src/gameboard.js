@@ -260,6 +260,7 @@ export class Gameboard {
                 }
             }
         }
+        // console.log("allSunk() is true");
         return true;
     }
 
