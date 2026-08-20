@@ -136,6 +136,29 @@ async function playGame() {
             // }
         }
 
+        if (gameBoard1.allSunk() || gameBoard2.allSunk()) {
+            for (let x = 0; x < 10; x++) {
+                for (let y = 0; y < 10; y++) {
+                    let square = document.getElementById("right_board" + String(x) + String(y));
+                    let cloneSquare = square.cloneNode(true);
+                    square.parentNode.replaceChild(cloneSquare, square);
+                }
+            }
+            if (gameBoard1.allSunk()) {
+                messages.replaceChildren();
+                let p = document.createElement("p");
+                p.innerHTML = "The game is over.  Computer has won.";
+                messages.appendChild(p);
+            }
+            else if (gameBoard2.allSunk()) {
+                messages.replaceChildren();
+                let p = document.createElement("p");
+                p.innerHTML = "The game is over.  You have won.";
+                messages.appendChild(p);
+            }
+        }
+        
+
         // if (movesLeftInRound === 0) {
         //     movesLeftInRound = 1;
         //     counter--;
