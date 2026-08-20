@@ -14,8 +14,8 @@ let player2Moved = false;
 let player1 = new Player(false);
 let player2 = new Player(true);
 
-// let player1Turn = Math.random() < .5;
-let player1Turn = true;;
+let player1Turn = Math.random() < .5;
+// let player1Turn = true;;
 
 let gameBoard1 = player1.gameBoard;
 let gameBoard2 = player2.gameBoard;
@@ -29,7 +29,7 @@ let start_button = document.querySelector("#start");
 start_button.addEventListener("click", (e) => {
     // let messages = document.querySelector("#bottom_right");
     if (!gameStarted) {
-        console.log("game starting");
+        // console.log("game starting");
         gameStarted = true;
         toggle_button.style.backgroundColor = "rgba(20, 20, 17, 0.851)"
         toggle_button.disabled = true;
@@ -64,29 +64,29 @@ start_button.addEventListener("click", (e) => {
 async function playGame() {
     let gameBoard1 = player1.gameBoard;
     let gameBoard2 = player2.gameBoard;
-    console.log("in playGame");
+    // console.log("in playGame");
     // let counter = 100;
     // let movesLeftInRound = 1;
     // 
     let messages = document.querySelector("#bottom_right");
     // p.innerHTML = "Your move";
     // messages.appendChild(p);
-    console.log("gameBoard1.allSunk(): " + gameBoard1.allSunk() + ", gameBoard2.allSunk(): " + gameBoard2.allSunk());
+    // console.log("gameBoard1.allSunk(): " + gameBoard1.allSunk() + ", gameBoard2.allSunk(): " + gameBoard2.allSunk());
     while (!gameBoard1.allSunk() && !gameBoard2.allSunk()) {
             // while (true) {
 
-        console.log("neither board has all sunk ships");
+        // console.log("neither board has all sunk ships");
         // console.log("counter: " + counter + ", move left in round: " + movesLeftInRound);
         messages.replaceChildren();
         if (player1Turn) {
-            console.log("player1 turn");
+            // console.log("player1 turn");
             // player1Moved = false;
             // player1Turn = false;
             let p = document.createElement("p");
             p.innerHTML = "Your move";
             messages.appendChild(p);
             await waitForClick("right_board");
-            console.log("click player 1")
+            // console.log("click player 1")
             // console.log(event.target.classList);
             // if (event.target.classList.contains("empty")) {
             //     console.log("switcing to player1");
@@ -99,6 +99,17 @@ async function playGame() {
 
         }
         else {
+            // console.log("player 2's turn");
+            for (let x = 0; x < 10; x++) {
+                // console.log("XXXX");
+                for (let y = 0; y < 10; y++) {
+                    // console.log("in disallow click loop");
+                    let square = document.getElementById("right_board" + String(x) + String(y));
+                    // console.log(square);
+                    square.style.pointerEvents = 'none';
+                }
+            }
+
             // player 2's turn
 
             // get the number of blank spaces on player 1's board
@@ -111,17 +122,17 @@ async function playGame() {
                     }
                 }
             }
-            console.log("emptySpaces: " + emptySpaces);
-            console.log("player2 turn");
+            // console.log("emptySpaces: " + emptySpaces);
+            // console.log("player2 turn");
             let p = document.createElement("p");
             p.innerHTML = "Computer's move";
             messages.appendChild(p);
 
             await setTimeout(() => {
                 let index = Math.floor(Math.random() * emptySpaces);
-                console.log("setTimeout index: " + index);
+                // console.log("setTimeout index: " + index);
                 let square = getSquareAtNumber(index);
-                console.log(square);
+                // console.log(square);
                 square.click();
                 // player1Turn = true;
             }, 3000);
@@ -155,6 +166,15 @@ async function playGame() {
                 let p = document.createElement("p");
                 p.innerHTML = "The game is over.  You have won.";
                 messages.appendChild(p);
+            }
+        }
+        for (let x = 0; x < 10; x++) {
+                // console.log("XXXX");
+            for (let y = 0; y < 10; y++) {
+                // console.log("in disallow click loop");
+                let square = document.getElementById("right_board" + String(x) + String(y));
+                // console.log(square);
+                square.style.pointerEvents = 'auto';
             }
         }
         
@@ -447,7 +467,7 @@ function waitForClick(elementId) {
 // }
 
 function getSquareAtNumber(number) {
-    console.log("number: " + number);
+    // console.log("number: " + number);
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
             // console.log("x: " + x + ", y: " + y);
