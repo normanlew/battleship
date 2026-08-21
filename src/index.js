@@ -79,6 +79,15 @@ async function playGame() {
         // console.log("counter: " + counter + ", move left in round: " + movesLeftInRound);
         messages.replaceChildren();
         if (player1Turn) {
+            for (let x = 0; x < 10; x++) {
+                    // console.log("XXXX");
+                for (let y = 0; y < 10; y++) {
+                    // console.log("in disallow click loop");
+                    let square = document.getElementById("right_board" + String(x) + String(y));
+                    // console.log(square);
+                    square.style.pointerEvents = 'auto';
+                }
+            }
             // console.log("player1 turn");
             // player1Moved = false;
             // player1Turn = false;
@@ -168,15 +177,7 @@ async function playGame() {
                 messages.appendChild(p);
             }
         }
-        for (let x = 0; x < 10; x++) {
-                // console.log("XXXX");
-            for (let y = 0; y < 10; y++) {
-                // console.log("in disallow click loop");
-                let square = document.getElementById("right_board" + String(x) + String(y));
-                // console.log(square);
-                square.style.pointerEvents = 'auto';
-            }
-        }
+
         
 
         // if (movesLeftInRound === 0) {
@@ -485,4 +486,14 @@ function getSquareAtNumber(number) {
         }
     }
     return null;
+}
+
+for (let x = 0; x < 10; x++) {
+    // console.log("XXXX");
+    for (let y = 0; y < 10; y++) {
+        // console.log("in disallow click loop");
+        let square = document.getElementById("right_board" + String(x) + String(y));
+        // console.log(square);
+        square.style.pointerEvents = 'none';
+    }
 }
